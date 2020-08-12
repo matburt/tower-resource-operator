@@ -1,12 +1,13 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: "{{ meta.name }}"
+  name: "{{ meta.name + '-' + (99999999 | random | to_uuid)[:8] }}"
   namespace: "{{ meta.namespace }}"
 spec:
   ttlSecondsAfterFinished: 3600
   template:
     spec:
+      serviceAccountName: tower-resource-operator
       containers:
       - name: joblaunch
         image: matburt/operator-job-run:latest
